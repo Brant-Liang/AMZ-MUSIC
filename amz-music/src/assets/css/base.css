@@ -1,1 +1,44 @@
-@import './normailize.css'
+@import './normailize.css';
+
+:root {
+  --color-text: #8a8a8a;
+  --color-high-text: #1D82FE;
+  --color-background: #fefefe;
+  --font-size: 14px;
+  --line-height: 1.5;
+}
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  user-select: none ; /* 禁止用户鼠标在页面上选中文字图片等; */
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: STXingkai;
+  -webkit-tap-highlight-color: transparent;
+}
+a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.clear-fix::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+.clear-fix {
+  zoom: 1;
+}
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
