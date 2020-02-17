@@ -15,22 +15,24 @@
         <img slot="icon" src="~assets/img/tabbar/me.svg" alt="">
         <span slot="title">我的</span>
       </tab-bar-item>
-
     </tab-bar>
+    <slider-menu/>
   </div>
 </template>
 <script>
 import TabBar from 'components/common/tabbar/TabBar'
 import TabBarItem from 'components/common/tabbar/TabBarItem'
-
+import SliderMenu from 'components/content/silder-menu/Menu'
 export default {
   components: {
     TabBar,
-    TabBarItem
+    TabBarItem,
+    SliderMenu
   }
 }
 </script>
 
 <style>
 @import 'assets/css/base.css';
+
 </style>

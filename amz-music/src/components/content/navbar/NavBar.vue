@@ -5,28 +5,32 @@
     </div>
     <div class="right">
       <div class="search">
-        <img src="~assets/img/nav-bar/search.svg" alt />
+        <img src="~assets/img/nav-bar/search.svg" />
       </div>
-      <div class="menu">
-        <img src="~assets/img/nav-bar/menu.svg" alt />
+      <div class="menu" @click="menuClick">
+        <img src="~assets/img/nav-bar/menu.svg" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  name: 'NavBar',
+  methods: {
+    menuClick() {
+      this.$store.commit('menuShow')
+    }
+  }
+};
 </script>
 
 <style>
 .nav-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   display: flex;
   height: 50px;
   color: #2c2c2c;
+  margin-bottom: 20px;
 }
 .nav-bar .left{
   width: 70%;

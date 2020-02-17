@@ -1,6 +1,9 @@
 <template>
   <div class="nav-bar-item" @click="itemClick" :class="{active: isActive}">
-    <slot></slot>
+    <span>
+      <slot></slot>
+    </span>
+    <div v-if="isActive" class="color-active"></div>
   </div>
 </template>
 
@@ -23,15 +26,22 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .nav-bar-item {
   width: 48px;
-  height: 100%;
-  line-height: 50px;
+  height: 36px;
   text-align: center;
+  line-height: 31px;
 }
 .active {
   font-size: 24px;
   transition: 0.18s;
+}
+.color-active {
+  width: 10px;
+  height: 5px;
+  background-color: var(--color-high-text);
+  border-radius: 2.5px;
+  margin: 0 auto;
 }
 </style>

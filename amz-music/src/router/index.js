@@ -2,9 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 const Home = () => import('views/home/Home.vue')
 const Profile = () => import('views/profile/profile.vue')
-const Recommand = () => import('views/recommand/Recommand.vue')
-const Video = () => import('views/video/Video.vue')
-const Dj = () => import('views/dj/Dj.vue')
+const Recommand = () => import('views/home/homeRecommand/Recommand.vue')
+const Video = () => import('views/home/homeVideo/Video.vue')
+const Dj = () => import('views/home/homeDj/Dj.vue')
 Vue.use(VueRouter)
 
 const routes = [

@@ -1,6 +1,6 @@
 <template>
-  <div id="profile">
-    我的
+  <div class="functions">
+    <slot></slot>
   </div>
 </template>
 
@@ -11,5 +11,7 @@ export default {
 </script>
 
 <style scoped>
-
+.functions {
+  display: flex;
+}
 </style>
