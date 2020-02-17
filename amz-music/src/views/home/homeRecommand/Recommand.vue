@@ -18,16 +18,19 @@
         <span slot="func-title">更多</span>
       </func-item>
     </func-bar>
+    <rec-songs-list />
   </div>
 </template>
 
 <script>
 import FuncBar from 'components/content/funcBar/FuncBar'
 import FuncItem from 'components/content/funcBar/FuncItem'
+import RecSongsList from './childComponents/SongsList'
 export default {
   components: {
     FuncBar,
-    FuncItem
+    FuncItem,
+    RecSongsList
   }
 }
 </script>

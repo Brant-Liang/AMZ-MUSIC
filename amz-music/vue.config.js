@@ -5,7 +5,8 @@ module.exports = {
         'components': '@/components',
         'views': '@/views',
         'store': '@/store',
-        'assets': '@/assets'
+        'assets': '@/assets',
+        'network': '@/network'
       }
     }
   }
