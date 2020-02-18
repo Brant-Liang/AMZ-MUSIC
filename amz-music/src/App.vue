@@ -16,18 +16,21 @@
         <span slot="title">我的</span>
       </tab-bar-item>
     </tab-bar>
+    <search/>
     <slider-menu/>
   </div>
 </template>
 <script>
 import TabBar from 'components/common/tabbar/TabBar'
 import TabBarItem from 'components/common/tabbar/TabBarItem'
+import search from 'views/search/Search'
 import SliderMenu from 'components/content/silder-menu/Menu'
 export default {
   components: {
     TabBar,
     TabBarItem,
-    SliderMenu
+    SliderMenu,
+    search
   }
 }
 </script>

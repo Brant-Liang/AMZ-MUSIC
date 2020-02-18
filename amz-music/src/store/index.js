@@ -7,7 +7,8 @@ import getters from './getters'
 Vue.use(Vuex)
 
 const state = {
-  isShowMenu: false
+  isShowMenu: false,
+  isShowSearch: false
 }
 export default new Vuex.Store({
   state,

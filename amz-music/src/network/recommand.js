@@ -8,3 +8,16 @@ export function getSongList(limit) {
     }
   })
 }
+export function getBanners(type) {
+  return request({
+    url: '/banner',
+    params:{
+      type
+    }
+  })
+}
+export class SongsList {
+  constructor() {
+
+  }
+}

@@ -4,7 +4,7 @@
       <slot></slot>
     </div>
     <div class="right">
-      <div class="search">
+      <div class="search" @click="searchClick">
         <img src="~assets/img/nav-bar/search.svg" />
       </div>
       <div class="menu" @click="menuClick">
@@ -16,8 +16,16 @@
 
 <script>
 export default {
+  data() {
+    return {
+      show: false
+    }
+  },
   name: 'NavBar',
   methods: {
+    searchClick() {
+      this.$store.commit('serachShow')
+    },
     menuClick() {
       this.$store.commit('menuShow')
     }
@@ -30,7 +38,6 @@ export default {
   display: flex;
   height: 50px;
   color: #2c2c2c;
-  margin-bottom: 20px;
 }
 .nav-bar .left{
   width: 70%;

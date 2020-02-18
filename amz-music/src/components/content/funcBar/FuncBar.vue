@@ -13,5 +13,6 @@ export default {
 <style scoped>
 .functions {
   display: flex;
+  margin-top: 10px;
 }
 </style>

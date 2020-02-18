@@ -27,5 +27,6 @@ export default {
 .func-item span  {
   display: block;
   margin-top: 10px;
+  color: #666666;
 }
 </style>
