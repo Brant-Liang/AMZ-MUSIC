@@ -7,7 +7,7 @@
     </div>
     <div class="list">
       <div class="list-item" v-for="(item, index) in songsList" :key="index">
-        <img :src="item.picUrl" alt="">
+        <img :src="item.picUrl">
         <span>{{item.name}}</span>
       </div>
     </div>
@@ -30,7 +30,7 @@ export default {
 
 <style lang="stylus" scoped>
 .songs-list 
-  padding 20px 10px
+  padding 0 10px
   box-sizing border-box
   width 100%
   overflow hidden
@@ -56,11 +56,11 @@ export default {
     width 100%
     .list-item
       display inline-block
-      margin-right 5px
-      width 110px
+      margin-right 10px
+      width 100px
       img
-        width 110px
-        height 110px
+        width 100px
+        height 100px
         border-radius 5px
       span 
         font-size 14px

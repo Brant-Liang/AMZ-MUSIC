@@ -11,22 +11,20 @@ export default {
 }
 </script>
 
-<style scoped>
-.func-item {
-  flex: 1;
-  display: block;
-  font-size: 14px;
-  height: 70px;
-  text-align: center;
-}
-.func-item img {
-  width: 35px;
-  height: 35px;
-  vertical-align: middle;
-}
-.func-item span  {
-  display: block;
-  margin-top: 10px;
-  color: #666666;
-}
+<style lang="stylus" scoped>
+.func-item
+  flex 1
+  display block
+  font-size 14px
+  height 70px
+  text-align center
+  img 
+    width 30px
+    height 30px
+    vertical-align middle
+  span
+    display block
+    margin-top 10px
+    color #666666
+    font-size 14px
 </style>

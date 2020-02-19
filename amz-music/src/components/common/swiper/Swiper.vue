@@ -30,4 +30,6 @@ export default {
 .my-swipe
   width 100%
   text-align center
+  img 
+   border-radius 5px
 </style>

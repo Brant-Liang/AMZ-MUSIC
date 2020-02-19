@@ -2,7 +2,10 @@ export default {
   menuShow(state) {
     state.isShowMenu = true
   },
-  serachShow(state) {
+  searchShow(state) {
     state.isShowSearch = true
+  },
+  backToHome(state) {
+    state.isShowSearch = false
   }
 }

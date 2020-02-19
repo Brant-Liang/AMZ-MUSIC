@@ -24,7 +24,7 @@ export default {
   name: 'NavBar',
   methods: {
     searchClick() {
-      this.$store.commit('serachShow')
+      this.$store.commit('searchShow')
     },
     menuClick() {
       this.$store.commit('menuShow')
