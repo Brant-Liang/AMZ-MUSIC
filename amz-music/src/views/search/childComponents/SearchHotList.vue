@@ -3,7 +3,7 @@
     <div class="header">热搜歌曲</div>
     <better-scroll class="content" :probeType="3">
       <ul class="hot-list">
-        <li v-for="(item, index) in hotList" :key="index">
+        <li v-for="(item, index) in hotList" :key="index" @click="searchTheWord(index)">
           <div class="rank">{{index + 1}}</div>
           <div class="item-data">
             <div class="item-header">
@@ -36,7 +36,12 @@ export default {
   },
   components: {
     BetterScroll
-  }
+  },
+  methods: {
+    searchTheWord(index) {
+      this.$store.commit('inputTheWord', this.hotList[index].searchWord)
+    }
+  },
 };
 </script>
 

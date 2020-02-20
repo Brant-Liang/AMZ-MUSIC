@@ -8,7 +8,8 @@ Vue.use(Vuex)
 
 const state = {
   isShowMenu: false,
-  isShowSearch: false
+  isShowSearch: false,
+  searchKeywords: null
 }
 export default new Vuex.Store({
   state,

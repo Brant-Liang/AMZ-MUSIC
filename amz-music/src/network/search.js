@@ -5,3 +5,12 @@ export function getHotSearch () {
     url: '/search/hot/detail'
   })
 }
+
+export function getSuggest(keywords) {
+  return request({
+    url: '/search/suggest',
+    params: {
+      keywords
+    }
+  })
+}
