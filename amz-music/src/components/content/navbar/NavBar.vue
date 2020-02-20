@@ -38,6 +38,7 @@ export default {
   display: flex;
   height: 50px;
   color: #2c2c2c;
+  background-color: #fff;
 }
 .nav-bar .left{
   width: 70%;

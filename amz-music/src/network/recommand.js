@@ -1,5 +1,14 @@
 import { request } from './request'
 
+export function getBanners(type) {
+  return request({
+    url: '/banner',
+    params:{
+      type
+    }
+  })
+}
+
 export function getSongList(limit) {
   return request({
     url: '/personalized',
@@ -8,12 +17,9 @@ export function getSongList(limit) {
     }
   })
 }
-export function getBanners(type) {
+export function getNewSong() {
   return request({
-    url: '/banner',
-    params:{
-      type
-    }
+    url: '/personalized/newsong'
   })
 }
 export class SongsList {

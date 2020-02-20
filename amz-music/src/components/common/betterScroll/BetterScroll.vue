@@ -16,11 +16,19 @@ export default {
   props: {
     probeType: {
       type: Number,
-      default: 0
+      default: 0,
     },
     pullUpLoad: {
       type: Boolean,
       default: false
+    },
+    scrollX: {
+      type: Boolean,
+      default: false
+    },
+    scrollY: {
+      type: Boolean,
+      default: true
     }
   },
   mounted() {
@@ -28,7 +36,9 @@ export default {
       this.scroll = new BScroll(this.$refs.wrapper, {
         probeType: this.probeType,
         click: true,
-        pullUpLoad: this.pullUpLoad
+        pullUpLoad: this.pullUpLoad,
+        scrollX: this.scrollX,
+        scrollY: this.scrollY
       });
       // 2、 监听滚动位置
       this.scroll.on("scroll", position => {
@@ -53,7 +63,7 @@ export default {
     refresh() {
       this.scroll && this.scroll.refresh();
     },
-    scrollY() {
+    getScrollY() {
       return this.scroll ? this.scroll.y : 0;
     }
   }

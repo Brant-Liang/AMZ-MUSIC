@@ -24,6 +24,7 @@
       </func-item>
     </func-bar>
     <rec-songs-list :songsList="songList"/>
+    <rec-new-song :newSong="newSong"/>
   </div>
 </template>
 
@@ -32,21 +33,25 @@ import SwiperBanner from 'components/common/swiper/Swiper'
 import FuncBar from 'components/content/funcBar/FuncBar'
 import FuncItem from 'components/content/funcBar/FuncItem'
 import RecSongsList from './childComponents/SongsList'
+import RecNewSong from './childComponents/newSong'
 
-import { getBanners,getSongList } from 'network/recommand.js'
+import { getBanners,getSongList,getNewSong } from 'network/recommand.js'
 export default {
+  name: 'Recommand',
   components: {
     FuncBar,
     FuncItem,
     RecSongsList,
-    SwiperBanner
+    RecNewSong,
+    SwiperBanner,
   },
    data() {
     return {
       banners: [],
       songList: [],
       limit: 6,
-      type: 1
+      type: 1,
+      newSong: []
     }
   },
   created() {
@@ -58,16 +63,13 @@ export default {
     getSongList(this.limit).then(res => {
       this.songList = res.result
     })
+    // 获取推荐新歌
+    getNewSong().then(res => {
+      this.newSong = res.result
+    })
   },
 }
 </script>
 
 <style scoped>
-#recommand {
-  position: absolute;
-  top: 70px;
-  left: 0;
-  right: 0;
-  bottom: 49px;
-}
 </style>
