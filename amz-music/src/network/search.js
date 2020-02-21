@@ -6,11 +6,14 @@ export function getHotSearch () {
   })
 }
 
-export function getSuggest(keywords) {
+export function getSuggest(keywords, limit, offset, type) {
   return request({
-    url: '/search/suggest',
+    url: '/search',
     params: {
-      keywords
+      keywords,
+      limit,
+      offset,
+      type
     }
   })
 }

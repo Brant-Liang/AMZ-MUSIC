@@ -2,18 +2,21 @@
   <div class="search" v-show="$store.state.isShowSearch">
     <search-header />
     <search-hot-list :hotList="hotList" />
+    <search-list/>
   </div>
 </template>
 
 <script>
 import SearchHeader from './childComponents/SearchHeader'
 import SearchHotList from './childComponents/SearchHotList'
+import SearchList from './childComponents/SearchList'
 import { getHotSearch } from 'network/search'
 export default {
   name: "Search",
   components: {
     SearchHeader,
-    SearchHotList
+    SearchHotList,
+    SearchList
   },
   data() {
     return {

@@ -11,33 +11,44 @@
 </template>
 
 <script>
+
 import { getSuggest } from 'network/search'
+import { debounce } from 'common/utils'
 export default {
   name: 'SearchHeader',
   data() {
     return {
-      keywords: ''
+      limit: 30,
+      offset: 0,
+      type: 1,
+      searchList: []
     }
   },
   computed: {
-    getTheWord() {
-      return this.$store.state.searchKeywords
+    keywords: {
+      get() {
+        return this.$store.state.searchKeywords
+      },
+      set(val) {
+        this.$store.state.searchKeywords = val
+      }
     }
   },
   watch: {
     keywords(newVal) {
       console.log(this.keywords);
       if(newVal !== '') {
-        getSuggest(this.keywords).then(res => {
+        debounce(getSuggest(this.keywords, this.limit, this.offset, this.type).then(res => {
           console.log(res);
-        })
+          this.searchList = res.result.songs
+        }), 800)
       }
     }
   },
   methods: {
     backToHome() {
       this.$store.commit('backToHome')
-    },
+    }
   }
 };
 </script>
