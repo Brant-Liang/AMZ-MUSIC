@@ -9,7 +9,8 @@ Vue.use(Vuex)
 const state = {
   isShowMenu: false,
   isShowSearch: false,
-  searchKeywords: ''
+  searchKeywords: '',
+  searchList: []
 }
 export default new Vuex.Store({
   state,

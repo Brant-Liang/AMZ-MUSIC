@@ -6,10 +6,14 @@
 
 <script>
 export default {
-  
+
 }
 </script>
 
-<style>
-
+<style lang="stylus" scoped>
+.search-list
+  position fixed
+  top 50px
+  left 0
+  right 0
 </style>

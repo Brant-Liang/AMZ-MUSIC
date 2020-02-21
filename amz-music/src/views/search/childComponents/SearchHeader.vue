@@ -12,8 +12,6 @@
 
 <script>
 
-import { getSuggest } from 'network/search'
-import { debounce } from 'common/utils'
 export default {
   name: 'SearchHeader',
   data() {
@@ -21,7 +19,6 @@ export default {
       limit: 30,
       offset: 0,
       type: 1,
-      searchList: []
     }
   },
   computed: {
@@ -38,10 +35,12 @@ export default {
     keywords(newVal) {
       console.log(this.keywords);
       if(newVal !== '') {
-        debounce(getSuggest(this.keywords, this.limit, this.offset, this.type).then(res => {
-          console.log(res);
-          this.searchList = res.result.songs
-        }), 800)
+        this.$store.dispatch('searchListData', {
+          keywords: this.keywords,
+          limit: this.limit,
+          offset: this.offset,
+          type: this.type
+        })
       }
     }
   },
