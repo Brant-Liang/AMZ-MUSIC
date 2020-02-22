@@ -1,5 +1,5 @@
 export function debounce (func, delay) {
-  let timer 
+  let timer = null
   return function (...args) {
     if(timer) {
       clearTimeout(timer)

@@ -22,8 +22,10 @@ export function getNewSong() {
     url: '/personalized/newsong'
   })
 }
-export class SongsList {
-  constructor() {
-
-  }
-}
+// export class NewSongsList {
+//   constructor(itemInfo) {
+//     this.newSongName = itemInfo.name
+//     this.picUrl = itemInfo.picUrl
+//     this.artistsName = itemInfo.song.artists.name
+//   }
+// }

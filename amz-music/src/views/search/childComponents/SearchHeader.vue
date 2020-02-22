@@ -11,7 +11,7 @@
 </template>
 
 <script>
-
+import { getSuggest } from 'network/search'
 export default {
   name: 'SearchHeader',
   data() {
@@ -29,18 +29,24 @@ export default {
       set(val) {
         this.$store.state.searchKeywords = val
       }
+    },
+    searchList: {
+      get() {
+        return this.$store.state.searchList
+      },
+      set(val) {
+        this.$store.state.searchList = val
+      }
     }
   },
   watch: {
     keywords(newVal) {
       console.log(this.keywords);
       if(newVal !== '') {
-        this.$store.dispatch('searchListData', {
-          keywords: this.keywords,
-          limit: this.limit,
-          offset: this.offset,
-          type: this.type
-        })
+        getSuggest(this.keywords, this.limit, this.offset, this.type).then(res => {
+        console.log(res.result);
+        this.searchList = res.result.songs
+      })
       }
     }
   },
@@ -54,15 +60,17 @@ export default {
 
 <style lang="stylus" scoped>
 .header 
+  padding 0 15px
   display: flex;
   height 50px
   align-items center
+  justify-content space-between
   .back
     img 
-      width 20px
-      height 20px 
+      width 16px
+      height 16px 
   .search-input 
-    width: 70%;
+    width: 74%;
     height: 24px;
     border-radius: 12px;
     background-color: #eee;
@@ -76,5 +84,4 @@ export default {
   span
     color: #111
     line-height: 24px
-    margin-left: 20px
 </style>

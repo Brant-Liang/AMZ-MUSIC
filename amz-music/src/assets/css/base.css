@@ -1,5 +1,4 @@
 @import './normailize.css';
-
 :root {
   --color-text: #8a8a8a;
   --color-high-text: #1D82FE;
@@ -18,7 +17,7 @@ body {
   user-select: none ; /* 禁止用户鼠标在页面上选中文字图片等; */
   background-color: var(--color-background);
   color: var(--color-text);
-  font-family: STXingkai;
+  font-family: Helvetica, STXingKai;
   -webkit-tap-highlight-color: transparent;
 }
 a {

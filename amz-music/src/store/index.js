@@ -10,7 +10,9 @@ const state = {
   isShowMenu: false,
   isShowSearch: false,
   searchKeywords: '',
-  searchList: []
+  searchHistory: ['毛不易', '周杰伦'],
+  searchList: [],
+  isShowAudio: false
 }
 export default new Vuex.Store({
   state,
