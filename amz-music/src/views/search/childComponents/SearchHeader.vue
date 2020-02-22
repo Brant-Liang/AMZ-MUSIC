@@ -1,10 +1,11 @@
 <template>
   <div class="header">
     <div @click="backToHome" class="back" >
-      <img src="~assets/img/search/back.png" alt />
+      <img src="~assets/img/search/back.png" />
     </div>
     <div class="search-input">
       <input v-model.trim="keywords" type="text" />
+      <img @click="clear" src="~assets/img/common/cha.png" />
     </div>
     <span>搜索</span>
   </div>
@@ -53,6 +54,9 @@ export default {
   methods: {
     backToHome() {
       this.$store.commit('backToHome')
+    },
+    clear() {
+      this.keywords = ''
     }
   }
 };
@@ -81,6 +85,9 @@ export default {
       height: 100%;
       border: none;
       background-color: #eee
+    img
+      height 12px
+      width 12px
   span
     color: #111
     line-height: 24px
