@@ -2,7 +2,7 @@
     <better-scroll class="content" v-if="searchKeywords !== ''">
     <div class="search-suggest-list" >
       <ul>
-        <li class="item-name" v-for="(item, index) in searchList" :key="index">
+        <li class="item-name" v-for="(item, index) in searchList" :key="index" @click="getMusicId(item)">
           {{item.name}}-{{item.artists[0].name}}
         </li>
       </ul>
@@ -23,6 +23,16 @@ export default {
     },
     searchKeywords() {
       return this.$store.state.searchKeywords
+    }
+  },
+  methods: {
+    getMusicId(item) {
+      this.$store.dispatch('getMusic', {
+        id: item.id,
+        name: item.name+ '-' +item.artists[0].name,
+        artist: item.artists[0].name,
+        pic: item.artists[0].img1v1Url
+      })
     }
   },
 }

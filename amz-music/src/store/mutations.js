@@ -17,11 +17,25 @@ export default {
   inputTheWord(state, word) {
     state.searchKeywords = word
   },
+  // 添加历史记录
+  addHistory(state, payLoad) {
+    console.log(payLoad);
+    state.searchHistory = new Set([payLoad.name, ...state.searchHistory])
+  },
   // 删除历史记录
   deleteAll(state) {
     state.searchHistory = []
   },
+  getMusicUrl(state, payLoad) {
+    state.currentId = payLoad.id
+    console.log(state.currentId);
+    this.commit('addHistory',
+    { 
+      id: payLoad.id,
+      name: payLoad.name
+    })
+  },
   showAudio(state) {
     state.isShowAudio = true
-  }
+  },
 }

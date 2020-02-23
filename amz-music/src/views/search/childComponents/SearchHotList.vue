@@ -48,7 +48,7 @@ export default {
 <style lang="stylus" scoped>
 .hot-search
   .content
-    height calc(100vh - 100px)
+    height calc(100vh - 163px)
     overflow hidden
     li
       display flex
