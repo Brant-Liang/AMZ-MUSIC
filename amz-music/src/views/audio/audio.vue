@@ -15,8 +15,8 @@
     </div>
     <b-scroll class="content">
       <div class="lyric">
-        <div class="line" v-for="(item, index) in songLyric" :key="index">
-          {{item}}
+        <div class="line" :class="{active: currentIndex === index}" v-for="(item, index) in songLyric" :key="index">
+          {{item.lyric}}
         </div>
       </div>
     </b-scroll>
@@ -39,6 +39,11 @@
 import BScroll from 'components/common/betterScroll/BetterScroll'
 export default {
   name: 'Audio',
+  data() {
+    return {
+      currentIndex: 0,
+    }
+  },
   components: {
     BScroll
   },
@@ -114,6 +119,8 @@ export default {
     .lyric
       .line
         padding 5px 0px
+      .active
+        color #fff
   .controlBar
     display flex
     justify-content space-around
