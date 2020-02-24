@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-show="!$store.state.isShowAudio">
     <nav-bar>
       <nav-bar-item path='/home/recommand'>推荐</nav-bar-item>
       <nav-bar-item path='/home/video'>视频</nav-bar-item>
