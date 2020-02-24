@@ -12,7 +12,9 @@
       <div class="share">分享</div>
     </div>
     <div class="songPic" v-if="isShowPic" @click="showLysic">
-      <img :src="songDesc.pic">
+      <div class="dist" ref="dist">
+        <img :src="songDesc.pic">
+      </div>
     </div>
     <b-scroll class="content" v-else>
       <div class="lyric" @click="showPic">
@@ -47,11 +49,16 @@ export default {
     return {
       currentIndex: 0,
       playStatus: false,
-      isShowPic: false
+      isShowPic: false,
+      startR: 0
     }
   },
   mounted() {
     this.audioHandle()
+  },
+  updated(){
+    if(this.$refs.dist)
+      this.animation()
   },
   components: {
     BScroll
@@ -109,7 +116,15 @@ export default {
     },
     getDuration() {
       console.log(this.$refs.Audio.duration);
-    }
+    },
+    animation() {
+      const Dist = this.$refs.dist
+      if(!this.playStatus){
+        Dist.style.transform = "rotate(" + this.startR + "deg)"
+        this.startR+=0.3
+        window.requestAnimationFrame(this.animation)
+      }
+    },
   },
 }
 </script>
@@ -143,21 +158,21 @@ export default {
           color #ddd
           font-size 14px
     .songPic
-      display flex
-      justify-content center
-      align-items center
-      height 275px
-      width 275px
-      background url('~assets/img/common/disc.png') no-repeat
-      background-size contain
-      position relative
-      left 50%
-      top 20%
-      transform translate(-50%)
-      img 
-        width 168px
-        height 168px
-        border-radius 50%
+      padding-top 30%
+      
+      .dist
+        margin 0 auto
+        height 275px
+        width 275px
+        background url('~assets/img/common/disc.png') no-repeat
+        background-size contain
+        display flex
+        justify-content center
+        align-items center
+        img 
+          width 168px
+          height 168px
+          border-radius 50%
     .content
       margin-top 60px
       margin-bottom 50px
@@ -172,11 +187,13 @@ export default {
           padding 5px 0px
         .active
           color #fff
+          font-size 18px
     .controlBar
       display flex
       justify-content space-around
       height 80px
       position: fixed;
+      align-items center
       bottom: 0px;
       left: 0;
       right: 0;
@@ -184,11 +201,6 @@ export default {
         width 35px
         height 35px
         border-radius 50%
-        display flex
-        align-items center
-        justify-content center
-        background-color #aaa
-        opacity 0.5
         img
           width 25px
           height 25px
