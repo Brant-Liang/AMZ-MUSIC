@@ -16,24 +16,41 @@
         <img :src="songDesc.pic">
       </div>
     </div>
-    <b-scroll class="content" v-else>
+    <b-scroll class="content" ref="scroll" v-else>
       <div class="lyric" @click="showPic">
-        <div class="line" :class="{active: currentIndex === index}" v-for="(item, index) in songLyric" :key="index">
+        <p class="line" ref="lineLyric" :class="{active: currentIndex === index}" v-for="(item, index) in songLyric" :key="index">
           {{item.lyric}}
-        </div>
+        </p>
       </div>
     </b-scroll>
-    <div class="controlBar">
-      <div @click="getDuration">上一首</div>
-      <div class="play" @click="audioClick" ref="audioBtn">
-        <img v-if="playStatus" src="~assets/img/audio/play.png" alt="">
-        <img v-else src="~assets/img/audio/pause.png" alt="">
+    <div class="progress-bar">
+      <div class="currentTime">{{curTime}}</div>
+      <div class="progress-line">
+        <div class="played-line" ref="playedLine"></div>
+        <div class="controlBtn" ref="controlBtn"></div>
       </div>
-      <div>下一首</div>
+      <div class="duration">{{duration}}</div>
+    </div>
+    <div class="controlBar">
+      <div class="play-way">
+        <img src="~assets/img/audio/liebiaoxunhuan.svg" alt="">
+      </div>
+      <div class="last">
+        <img src="~assets/img/audio/next.svg" alt="">
+      </div>
+      <div class="play" @click="audioClick" ref="audioBtn">
+        <img v-if="playStatus" src="~assets/img/audio/play.svg" alt="">
+        <img v-else src="~assets/img/audio/pause.svg" alt="">
+      </div>
+      <div class="next">
+        <img src="~assets/img/audio/next.svg" alt="">
+      </div>
+      <div class="play-list">
+        <img src="~assets/img/audio/list.svg" alt="">
+      </div>
     </div>
     <audio :src="currentMusic"
            loop
-           autoplay
            ref="Audio"></audio>
     </div>
     <div class="mask" :style="{backgroundImage: 'url('+ songDesc.pic +')'} "></div>       
@@ -50,7 +67,10 @@ export default {
       currentIndex: 0,
       playStatus: false,
       isShowPic: false,
-      startR: 0
+      startR: 5,
+      x: 0.05,
+      curTime: '0:00',
+      duration: '0:00'
     }
   },
   mounted() {
@@ -75,7 +95,7 @@ export default {
     },
     songLyric() {
       return this.$store.getters.splitLyric
-    }
+    },
   },
   methods: {
     backToHome() {
@@ -89,14 +109,22 @@ export default {
     },
     audioPlay() {
       let {Audio} = this.$refs
-      if(Audio.src !== undefined){
+      console.log(Audio.src);
+      if(Audio.src !== ''){
         Audio.play()
+        if(Audio.duration % 60 < 10)
+          this.duration = Math.floor(Audio.duration/ 60) + ':' + '0'+ parseInt(Audio.duration % 60)
+        else
+          this.duration = Math.floor(Audio.duration/ 60) + ':' + parseInt(Audio.duration % 60)
+        this.lyricPlay()
       }
+      console.log(this.songLyric);
       this.playStatus = false
     },
     pause() {
       this.$refs.Audio.pause()
       this.playStatus = true
+      clearInterval(this.lyricTimer)
     },
     // 播放暂停按钮
     audioClick() {
@@ -109,22 +137,59 @@ export default {
     audioHandle() {
       let play = () => {
         this.audioPlay()
-        this.$refs.audioPage.removeEventListener("touchstart", play)
+        document.removeEventListener("touchstart", play)
       }
       play()
-      this.$refs.audioPage.addEventListener("touchstart", play)
+      document.addEventListener("touchstart", play)
     },
-    getDuration() {
-      console.log(this.$refs.Audio.duration);
+    audioEnd() {
+      this.currentIndex = 0
+      this.$refs.scroll.scrollTo(0, 0)
     },
     animation() {
-      const Dist = this.$refs.dist
+      const { dist } = this.$refs
       if(!this.playStatus){
-        Dist.style.transform = "rotate(" + this.startR + "deg)"
-        this.startR+=0.3
+        dist.style.transform = "rotate(" + this.startR + "deg)"
+        this.startR += 0.2
         window.requestAnimationFrame(this.animation)
       }
     },
+    lyricPlay() {
+      let { Audio, scroll } = this.$refs
+      if(!Audio || !scroll) return
+      clearInterval(this.lyricTimer)
+      this.lyricTimer = setInterval(() => {
+        let duration = Audio.duration
+        let currentTime = Audio.currentTime
+        if(currentTime % 60 < 10)
+          this.curTime = Math.floor(currentTime / 60) + ':' +'0'+ parseInt(currentTime % 60)
+        else
+          this.curTime = Math.floor(currentTime / 60) + ':' + parseInt(currentTime % 60)
+        if(currentTime >= duration) {
+          this.audioEnd()
+          return
+        }
+        // 歌词滚动及相对应时间
+        //console.log(this.songLyric);
+        if(!this.songLyric || !this.$refs.scroll) return
+        let n
+        this.songLyric.find((item, index) => {
+          let {minute, second} = item
+          if(minute*60 + second === Math.round(currentTime)) {
+            n = index
+            return true
+          }
+          return false
+        })
+        if(n && n !== this.currentIndex) {
+          this.currentIndex = n
+          if(this.currentIndex > 4) {
+            let lineEl = this.$refs.lineLyric[this.currentIndex - 4]
+            this.$refs.scroll.scrollToElement(lineEl ,300)
+          }
+        }
+      }, 1000)
+    }
   },
 }
 </script>
@@ -159,7 +224,6 @@ export default {
           font-size 14px
     .songPic
       padding-top 30%
-      
       .dist
         margin 0 auto
         height 275px
@@ -184,26 +248,69 @@ export default {
         width 80%
         margin 0 auto
         .line
-          padding 5px 0px
+          padding 8px 0px
         .active
           color #fff
-          font-size 18px
+          font-size 19px
+          transition all .4s ease
+    .progress-bar
+      display flex
+      justify-content space-between
+      align-items center
+      font-size 14px
+      color #fefefe
+      padding 0 18px
+      .progress-line
+        width 70%
+        height 2px
+        background-color #aaa
+        .played-line
+          color #fff
+        .controlBtn
+          width 10px
+          height 10px
+          background-color #fefefe
+          border-radius 50%
+          transform translateY(-4px)
     .controlBar
       display flex
       justify-content space-around
       height 80px
-      position: fixed;
+      width 100%
+      position fixed
       align-items center
-      bottom: 0px;
-      left: 0;
-      right: 0;
+      bottom 0px
+      left 0
+      right 0
+      .play-way
+        width 20%
+        text-align center
+        img
+          width 16px
+          height 16px
+      .last
+        width 20%
+        text-align center
+        img
+          transform rotate(180deg)
       .play
-        width 35px
-        height 35px
+        width 20%
         border-radius 50%
+        text-align center
         img
           width 25px
           height 25px
+      .next
+        width 20%
+        height 20px
+        font-size 0
+        text-align center
+      .play-list
+        width 20%
+        text-align center
+        img 
+          width 20px
+          height 20px
   .mask
     position fixed
     top 0
@@ -225,79 +332,6 @@ export default {
       right 0
       bottom 0
       top 0
-      background-color rgba(0,0,0, .7
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      )
+      background-color rgba(0,0,0, .7)
       
 </style>

@@ -7,9 +7,10 @@ export default {
       let time = item.substring(1, index)
       // let showTime = time.substring(0, 5)
       let timeArr = time.split(':')
-      let playTime = timeArr[0]*60 + parseFloat(timeArr[1]) * 1000
+      let minute = parseInt(timeArr[0])
+      let second = Math.round(timeArr[1])
       let lyric = item.substring(index + 1)
-      lineArr = [...lineArr, {playTime, lyric}]
+      lineArr = [...lineArr, {minute, second, lyric}]
     });
     return lineArr
   }

@@ -65,6 +65,9 @@ export default {
     },
     getScrollY() {
       return this.scroll ? this.scroll.y : 0;
+    },
+    scrollToElement(el, time = 500) {
+      this.scroll && this.scroll.scrollToElement(el ,time)
     }
   }
 };
