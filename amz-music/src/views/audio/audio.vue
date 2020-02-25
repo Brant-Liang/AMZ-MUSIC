@@ -11,12 +11,12 @@
       </div>
       <div class="share">分享</div>
     </div>
-    <div class="songPic" v-if="isShowPic" @click="showLysic">
+    <div class="songPic" v-show="isShowPic" @click="showLysic">
       <div class="dist" ref="dist">
         <img :src="songDesc.pic">
       </div>
     </div>
-    <b-scroll class="content" ref="scroll" v-else>
+    <b-scroll class="content" ref="scroll" v-show="!isShowPic">
       <div class="lyric" @click="showPic">
         <p class="line" ref="lineLyric" :class="{active: currentIndex === index}" v-for="(item, index) in songLyric" :key="index">
           {{item.lyric}}
@@ -76,10 +76,6 @@ export default {
   mounted() {
     this.audioHandle()
   },
-  updated(){
-    if(this.$refs.dist)
-      this.animation()
-  },
   components: {
     BScroll
   },
@@ -107,9 +103,18 @@ export default {
     showLysic() {
       this.isShowPic = false
     },
+    distAnimation() {
+      const { dist,controlBtn } = this.$refs
+      if(!this.playStatus){
+        dist.style.transform = "rotate(" + this.startR + "deg)"
+        controlBtn.style.transform = "translateX(" + this.x + "px)"
+        this.startR += 0.25
+        this.x += 0.015
+        window.requestAnimationFrame(this.distAnimation)
+      }
+    },
     audioPlay() {
       let {Audio} = this.$refs
-      console.log(Audio.src);
       if(Audio.src !== ''){
         Audio.play()
         if(Audio.duration % 60 < 10)
@@ -130,6 +135,7 @@ export default {
     audioClick() {
       if(this.$refs.Audio.paused) {
         this.audioPlay()
+        this.distAnimation()
         return
       }
       this.pause()
@@ -137,6 +143,7 @@ export default {
     audioHandle() {
       let play = () => {
         this.audioPlay()
+        this.distAnimation()
         document.removeEventListener("touchstart", play)
       }
       play()
@@ -145,14 +152,6 @@ export default {
     audioEnd() {
       this.currentIndex = 0
       this.$refs.scroll.scrollTo(0, 0)
-    },
-    animation() {
-      const { dist } = this.$refs
-      if(!this.playStatus){
-        dist.style.transform = "rotate(" + this.startR + "deg)"
-        this.startR += 0.2
-        window.requestAnimationFrame(this.animation)
-      }
     },
     lyricPlay() {
       let { Audio, scroll } = this.$refs
@@ -260,6 +259,9 @@ export default {
       font-size 14px
       color #fefefe
       padding 0 18px
+      position absolute
+      bottom 80px
+      width 100%
       .progress-line
         width 70%
         height 2px
@@ -271,7 +273,8 @@ export default {
           height 10px
           background-color #fefefe
           border-radius 50%
-          transform translateY(-4px)
+          position relative
+          top -4px
     .controlBar
       display flex
       justify-content space-around
