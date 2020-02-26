@@ -107,7 +107,7 @@ export default {
       const { dist } = this.$refs
       if(!this.playStatus){
         dist.style.transform = "rotate(" + this.startR + "deg)"
-        this.startR += 0.25
+        this.startR += 0.22
         window.requestAnimationFrame(this.distAnimation)
       }
     },
@@ -212,7 +212,7 @@ export default {
           color #ddd
           font-size 14px
     .songPic
-      padding-top 30%
+      padding 30% 0
       .dist
         margin 0 auto
         height 275px

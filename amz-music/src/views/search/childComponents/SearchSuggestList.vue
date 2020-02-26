@@ -3,7 +3,8 @@
     <div class="search-suggest-list" >
       <ul>
         <li class="item-name" v-for="(item, index) in searchList" :key="index" @click="getMusicId(item)">
-          {{item.name}}-{{item.artists[0].name}}
+          <img src="~assets/img/search/音乐.svg" >
+          <span>{{item.name}}-{{item.artists[0].name}}</span>
         </li>
       </ul>
     </div>
@@ -60,4 +61,8 @@ export default {
         overflow hidden
         text-overflow ellipsis
         white-space nowrap
+        display flex
+        align-items center
+        span 
+          margin-left 18px
 </style>

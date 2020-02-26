@@ -3,7 +3,7 @@
     <div class="currentTime">{{showCurTime}}</div>
     <van-slider v-model="proportion" 
                 bar-height="2px"
-                active-color="#ee0a24"
+                active-color="#1D82FE"
                 button-size="10px"
                 :style="{ width: '70%' }" 
                 @change="onChange" />

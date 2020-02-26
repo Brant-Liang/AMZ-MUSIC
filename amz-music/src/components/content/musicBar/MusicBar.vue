@@ -9,8 +9,12 @@
 <script>
 export default {
   name: 'MusicBar',
+  data() {
+    return {
+    }
+  },
   computed: {
-    songPic () {
+    songPic() {
       return this.$store.state.songDesc.pic
     }
   },
@@ -26,10 +30,9 @@ export default {
 .music-bar
   display flex
   align-items center
-  
   img 
     border-radius 50%
-    width 40px
-    height 40px
+    width 53px
+    height 53px
 
 </style>

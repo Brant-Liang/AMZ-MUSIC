@@ -21,7 +21,9 @@ const state = {
   },
   songList: [
     {
-
+      id: '',
+      name: '',
+      artist: '',
     },
   ],
   searchList: [],

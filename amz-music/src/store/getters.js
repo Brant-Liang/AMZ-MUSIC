@@ -1,4 +1,5 @@
 export default {
+  // 歌词数据切割
   splitLyric(state) {
     let lines = state.songDesc.lyric.split("\n")
     let lineArr = []
