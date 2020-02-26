@@ -38,4 +38,7 @@ export default {
   showAudio(state) {
     state.isShowAudio = true
   },
+  getCurrentTime(state, payLoad) {
+    state.currentTime = payLoad
+  }
 }

@@ -25,7 +25,8 @@ const state = {
     },
   ],
   searchList: [],
-  isShowAudio: false
+  isShowAudio: false,
+  currentTime: 0
 }
 export default new Vuex.Store({
   state,

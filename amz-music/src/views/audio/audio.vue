@@ -23,43 +23,39 @@
         </p>
       </div>
     </b-scroll>
-    <div class="progress-bar">
-      <div class="currentTime">{{curTime}}</div>
-      <div class="progress-line">
-        <div class="played-line" ref="playedLine"></div>
-        <div class="controlBtn" ref="controlBtn"></div>
-      </div>
-      <div class="duration">{{duration}}</div>
-    </div>
+    <progress-bar v-if="isShowAudio" :Audio="$refs.Audio" :curTime="curTime" :duration="duration"/>
     <div class="controlBar">
       <div class="play-way">
-        <img src="~assets/img/audio/liebiaoxunhuan.svg" alt="">
+        <img src="~assets/img/audio/liebiaoxunhuan.svg" alt />
       </div>
       <div class="last">
-        <img src="~assets/img/audio/next.svg" alt="">
+        <img src="~assets/img/audio/next.svg" alt />
       </div>
       <div class="play" @click="audioClick" ref="audioBtn">
-        <img v-if="playStatus" src="~assets/img/audio/play.svg" alt="">
-        <img v-else src="~assets/img/audio/pause.svg" alt="">
+        <img v-if="playStatus" src="~assets/img/audio/play.svg" alt />
+        <img v-else src="~assets/img/audio/pause.svg" alt />
       </div>
       <div class="next">
-        <img src="~assets/img/audio/next.svg" alt="">
+        <img src="~assets/img/audio/next.svg" alt />
       </div>
       <div class="play-list">
-        <img src="~assets/img/audio/list.svg" alt="">
+        <img src="~assets/img/audio/list.svg" alt />
       </div>
     </div>
     <audio :src="currentMusic"
            loop
-           ref="Audio"></audio>
+           ref="Audio"
+    >
+    </audio>
     </div>
-    <div class="mask" :style="{backgroundImage: 'url('+ songDesc.pic +')'} "></div>       
+    <audio-mask />
   </div>
-  
 </template>
 
 <script>
 import BScroll from 'components/common/betterScroll/BetterScroll'
+import ProgressBar from './childComponents/progress'
+import AudioMask from './childComponents/mask'
 export default {
   name: 'Audio',
   data() {
@@ -69,15 +65,16 @@ export default {
       isShowPic: false,
       startR: 5,
       x: 0.05,
-      curTime: '0:00',
-      duration: '0:00'
+      duration: 0
     }
+  }, 
+  components: {
+    BScroll,
+    ProgressBar,
+    AudioMask
   },
   mounted() {
     this.audioHandle()
-  },
-  components: {
-    BScroll
   },
   computed: {
     isShowAudio() {
@@ -88,6 +85,9 @@ export default {
     },
     songDesc() {
       return this.$store.state.songDesc
+    },
+    curTime() {
+      return this.$store.state.currentTime
     },
     songLyric() {
       return this.$store.getters.splitLyric
@@ -104,12 +104,10 @@ export default {
       this.isShowPic = false
     },
     distAnimation() {
-      const { dist,controlBtn } = this.$refs
+      const { dist } = this.$refs
       if(!this.playStatus){
         dist.style.transform = "rotate(" + this.startR + "deg)"
-        controlBtn.style.transform = "translateX(" + this.x + "px)"
         this.startR += 0.25
-        this.x += 0.015
         window.requestAnimationFrame(this.distAnimation)
       }
     },
@@ -117,10 +115,7 @@ export default {
       let {Audio} = this.$refs
       if(Audio.src !== ''){
         Audio.play()
-        if(Audio.duration % 60 < 10)
-          this.duration = Math.floor(Audio.duration/ 60) + ':' + '0'+ parseInt(Audio.duration % 60)
-        else
-          this.duration = Math.floor(Audio.duration/ 60) + ':' + parseInt(Audio.duration % 60)
+        this.duration = Audio.duration
         this.lyricPlay()
       }
       console.log(this.songLyric);
@@ -152,29 +147,24 @@ export default {
     audioEnd() {
       this.currentIndex = 0
       this.$refs.scroll.scrollTo(0, 0)
+      clearInterval(this.lyricTimer)
     },
     lyricPlay() {
       let { Audio, scroll } = this.$refs
-      if(!Audio || !scroll) return
-      clearInterval(this.lyricTimer)
+      if(!Audio || !scroll) return;
       this.lyricTimer = setInterval(() => {
-        let duration = Audio.duration
-        let currentTime = Audio.currentTime
-        if(currentTime % 60 < 10)
-          this.curTime = Math.floor(currentTime / 60) + ':' +'0'+ parseInt(currentTime % 60)
-        else
-          this.curTime = Math.floor(currentTime / 60) + ':' + parseInt(currentTime % 60)
-        if(currentTime >= duration) {
+        this.$store.commit('getCurrentTime', Audio.currentTime)
+        if(Audio.currentTime >= Audio.duration) {
           this.audioEnd()
           return
         }
         // 歌词滚动及相对应时间
         //console.log(this.songLyric);
-        if(!this.songLyric || !this.$refs.scroll) return
-        let n
+        if(!this.songLyric || !this.$refs.scroll) return;
+        let n;
         this.songLyric.find((item, index) => {
           let {minute, second} = item
-          if(minute*60 + second === Math.round(currentTime)) {
+          if(minute*60 + second === Math.round(Audio.currentTime)) {
             n = index
             return true
           }
@@ -252,89 +242,43 @@ export default {
           color #fff
           font-size 19px
           transition all .4s ease
-    .progress-bar
-      display flex
-      justify-content space-between
-      align-items center
-      font-size 14px
-      color #fefefe
-      padding 0 18px
-      position absolute
-      bottom 80px
-      width 100%
-      .progress-line
-        width 70%
-        height 2px
-        background-color #aaa
-        .played-line
-          color #fff
-        .controlBtn
-          width 10px
-          height 10px
-          background-color #fefefe
-          border-radius 50%
-          position relative
-          top -4px
-    .controlBar
-      display flex
-      justify-content space-around
-      height 80px
-      width 100%
-      position fixed
-      align-items center
-      bottom 0px
-      left 0
-      right 0
-      .play-way
-        width 20%
-        text-align center
-        img
-          width 16px
-          height 16px
-      .last
-        width 20%
-        text-align center
-        img
-          transform rotate(180deg)
-      .play
-        width 20%
-        border-radius 50%
-        text-align center
-        img
-          width 25px
-          height 25px
-      .next
-        width 20%
-        height 20px
-        font-size 0
-        text-align center
-      .play-list
-        width 20%
-        text-align center
-        img 
-          width 20px
-          height 20px
-  .mask
+  .controlBar
+    display flex
+    justify-content space-around
+    height 80px
+    width 100%
     position fixed
-    top 0
+    align-items center
+    bottom 0px
     left 0
     right 0
-    height 100%
-    z-index 1
-    background-repeat no-repeat
-    background-position 50%
-    background-size auto 100%
-    -webkit-transform: scale(1.2);
-    -ms-transform: scale(1.2);
-    transform scale(1.2)
-    filter blur(12px)
-    &:before
-      content ""
-      position fixed
-      left 0
-      right 0
-      bottom 0
-      top 0
-      background-color rgba(0,0,0, .7)
-      
+    .play-way
+      width 20%
+      text-align center
+      img
+        width 16px
+        height 16px
+    .last
+      width 20%
+      text-align center
+      img
+        transform rotate(180deg)
+    .play
+      width 20%
+      border-radius 50%
+      text-align center
+      img
+        width 25px
+        height 25px
+    .next
+      width 20%
+      height 20px
+      font-size 0
+      text-align center
+    .play-list
+      width 20%
+      text-align center
+      img 
+        width 20px
+        height 20px
 </style>
