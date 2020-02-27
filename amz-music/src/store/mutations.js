@@ -26,7 +26,7 @@ export default {
     state.searchHistory = []
   },
   getMusicUrl(state, payLoad) {
-    state.songList.id = payLoad.id
+    state.songDesc.id = payLoad.id
     this.commit('addHistory',
     { 
       name: payLoad.name
@@ -37,5 +37,9 @@ export default {
   },
   getCurrentTime(state, payLoad) {
     state.curTime = payLoad
+  },
+  addSongList(state, payLoad) {
+    state.songList.push(payLoad)
+    console.log(state.songList);
   }
 }

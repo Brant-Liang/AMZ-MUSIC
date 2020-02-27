@@ -19,13 +19,7 @@ const state = {
     pic: "https://p2.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
     lyric: ''
   },
-  songList: [
-    {
-      id: '1',
-      name: '1',
-      artist: '1',
-    },
-  ],
+  songList: [],
   searchList: [],
   isShowAudio: false,
   curTime: 0

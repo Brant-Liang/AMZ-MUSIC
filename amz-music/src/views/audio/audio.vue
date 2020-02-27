@@ -29,11 +29,17 @@
         <div class="next">
           <img src="~assets/img/audio/next.svg" alt />
         </div>
-        <div class="play-list">
+        <div class="play-list" @click="songList">
           <img src="~assets/img/audio/list.svg" alt />
         </div>
       </div>
-      <song-list/>
+      <van-popup
+        v-model="showSongList"
+        position="bottom"
+        :style="{ height: '40%' }"
+      >
+        <song-list/>
+      </van-popup>
       <audio :src="songDesc.currentMusic"
             loop
             ref="Audio"
@@ -50,7 +56,10 @@ import BScroll from 'components/common/betterScroll/BetterScroll'
 import ProgressBar from './childComponents/progress'
 import SongList from './childComponents/songList'
 import AudioMask from './childComponents/mask'
+import Vue from 'vue';
+import { Popup } from 'vant';
 
+Vue.use(Popup);
 import { mapState } from 'vuex'
 export default {
   name: 'Audio',
@@ -59,9 +68,11 @@ export default {
       currentIndex: 0,
       playStatus: false,
       isShowPic: false,
+      timer: null,
       startR: 5,
       x: 0.05,
-      duration: 0
+      duration: 0,
+      showSongList: false
     }
   }, 
   components: {
@@ -77,6 +88,7 @@ export default {
   watch: {
     currentMusic() {
       this.audioHandle()
+      this.pause()
     }
   },
   computed: {
@@ -84,6 +96,7 @@ export default {
       'isShowAudio',
       'songDesc',
       'curTime',
+
     ]),
     currentMusic() {
       return this.$store.state.songDesc.currentMusic
@@ -100,11 +113,11 @@ export default {
       this.isShowPic = false
     },
     distAnimation() {
-      const { dist } = this.$refs
-      if(!this.playStatus){
+      const { dist, Audio } = this.$refs
+      if(!this.playStatus && Audio.src){
         dist.style.transform = "rotate(" + this.startR + "deg)"
         this.startR += 0.22
-        window.requestAnimationFrame(this.distAnimation)
+        this.timer = requestAnimationFrame(this.distAnimation)
       }
     },
     audioPlay() {
@@ -143,6 +156,7 @@ export default {
       this.currentIndex = 0
       this.$refs.scroll.scrollTo(0, 0)
       clearInterval(this.lyricTimer)
+      window.cancelAnimationFrame(this.distAnimation)
     },
     lyricPlay() {
       let { Audio, scroll } = this.$refs
@@ -174,6 +188,9 @@ export default {
           }
         }
       }, 1000)
+    },
+    songList() {
+      this.showSongList = true
     }
   },
 }
