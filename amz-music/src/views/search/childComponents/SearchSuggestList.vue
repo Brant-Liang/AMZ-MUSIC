@@ -4,7 +4,7 @@
       <ul>
         <li class="item-name" v-for="(item, index) in searchList" :key="index" @click="getMusicId(item)">
           <img src="~assets/img/search/音乐.svg" >
-          <span>{{item.name}}-{{item.artists[0].name}}</span>
+          <span>{{item.name}}{{item.artists[0].name}}</span>
         </li>
       </ul>
     </div>
@@ -30,7 +30,7 @@ export default {
     getMusicId(item) {
       this.$store.dispatch('getMusic', {
         id: item.id,
-        name: item.name+ '-' +item.artists[0].name,
+        name: item.name + item.artists[0].name,
         artist: item.artists[0].name,
         pic: item.artists[0].img1v1Url
       })

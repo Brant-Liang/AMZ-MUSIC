@@ -44,6 +44,5 @@ export default {
   left 0
   bottom 0
   background-color #fff
-  z-index 2020
-  
+  z-index 1998
 </style>

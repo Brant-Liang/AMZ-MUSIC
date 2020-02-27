@@ -1,58 +1,50 @@
 <template>
   <div ref="audioPage" class="audio" v-show="isShowAudio" >
     <div class="audioContent">
-      <div class="header">
-      <div class="back" @click="backToHome">
-        <img src="~/assets/img/common/back.png" alt="">
+      <audio-header :songDesc="songDesc" />
+      <div class="songPic" v-show="isShowPic" @click="showLysic">
+        <div class="dist" ref="dist">
+          <img :src="songDesc.pic">
+        </div>
       </div>
-      <div class="music-desc">
-        <div class="name">{{songDesc.name}}</div>
-        <div class="artist">{{songDesc.artist}}</div>
+      <b-scroll class="content" ref="scroll" v-show="!isShowPic">
+        <div class="lyric" @click="showPic">
+          <p class="line" ref="lineLyric" :class="{active: currentIndex === index}" v-for="(item, index) in songLyric" :key="index">
+            {{item.lyric}}
+          </p>
+        </div>
+      </b-scroll>
+      <progress-bar v-if="isShowAudio" :Audio="$refs.Audio" :curTime="curTime" :duration="duration"/>
+      <div class="controlBar">
+        <div class="play-way">
+          <img src="~assets/img/audio/liebiaoxunhuan.svg" alt />
+        </div>
+        <div class="last">
+          <img src="~assets/img/audio/next.svg" alt />
+        </div>
+        <div class="play" @click="audioClick" ref="audioBtn">
+          <img v-if="playStatus" src="~assets/img/audio/play.svg" alt />
+          <img v-else src="~assets/img/audio/pause.svg" alt />
+        </div>
+        <div class="next">
+          <img src="~assets/img/audio/next.svg" alt />
+        </div>
+        <div class="play-list">
+          <img src="~assets/img/audio/list.svg" alt />
+        </div>
       </div>
-      <div class="share">分享</div>
-    </div>
-    <div class="songPic" v-show="isShowPic" @click="showLysic">
-      <div class="dist" ref="dist">
-        <img :src="songDesc.pic">
-      </div>
-    </div>
-    <b-scroll class="content" ref="scroll" v-show="!isShowPic">
-      <div class="lyric" @click="showPic">
-        <p class="line" ref="lineLyric" :class="{active: currentIndex === index}" v-for="(item, index) in songLyric" :key="index">
-          {{item.lyric}}
-        </p>
-      </div>
-    </b-scroll>
-    <progress-bar v-if="isShowAudio" :Audio="$refs.Audio" :curTime="curTime" :duration="duration"/>
-    <div class="controlBar">
-      <div class="play-way">
-        <img src="~assets/img/audio/liebiaoxunhuan.svg" alt />
-      </div>
-      <div class="last">
-        <img src="~assets/img/audio/next.svg" alt />
-      </div>
-      <div class="play" @click="audioClick" ref="audioBtn">
-        <img v-if="playStatus" src="~assets/img/audio/play.svg" alt />
-        <img v-else src="~assets/img/audio/pause.svg" alt />
-      </div>
-      <div class="next">
-        <img src="~assets/img/audio/next.svg" alt />
-      </div>
-      <div class="play-list">
-        <img src="~assets/img/audio/list.svg" alt />
-      </div>
-    </div>
-    <audio :src="currentMusic"
-           loop
-           ref="Audio"
-    >
-    </audio>
+      <audio :src="currentMusic"
+            loop
+            ref="Audio"
+      >
+      </audio>
     </div>
     <audio-mask />
   </div>
 </template>
 
 <script>
+import AudioHeader from './childComponents/audioHeader'
 import BScroll from 'components/common/betterScroll/BetterScroll'
 import ProgressBar from './childComponents/progress'
 import AudioMask from './childComponents/mask'
@@ -69,12 +61,18 @@ export default {
     }
   }, 
   components: {
+    AudioHeader,
     BScroll,
     ProgressBar,
     AudioMask
   },
   mounted() {
     this.audioHandle()
+  },
+  watch: {
+    currentMusic() {
+      this.audioHandle()
+    }
   },
   computed: {
     isShowAudio() {
@@ -94,9 +92,6 @@ export default {
     },
   },
   methods: {
-    backToHome() {
-      this.$store.commit('backToHome')
-    },
     showPic() {
       this.isShowPic = true
     },
@@ -112,13 +107,12 @@ export default {
       }
     },
     audioPlay() {
-      let {Audio} = this.$refs
+      let { Audio } = this.$refs
       if(Audio.src !== ''){
         Audio.play()
         this.duration = Audio.duration
         this.lyricPlay()
       }
-      console.log(this.songLyric);
       this.playStatus = false
     },
     pause() {
@@ -170,6 +164,7 @@ export default {
           }
           return false
         })
+        // 前5行不滚动
         if(n && n !== this.currentIndex) {
           this.currentIndex = n
           if(this.currentIndex > 4) {
@@ -192,25 +187,6 @@ export default {
     right 0
     bottom 0
     z-index 21
-    .header
-      display flex
-      justify-content space-between
-      padding 10px 15px 0
-      box-sizing border-box
-      align-items center
-      .back
-        img
-          height 20px
-          width 20px
-      .music-desc
-        text-align center
-        .name
-          color #fff
-          font-size 19px
-          margin-bottom 5px
-        .artist
-          color #ddd
-          font-size 14px
     .songPic
       padding 30% 0
       .dist

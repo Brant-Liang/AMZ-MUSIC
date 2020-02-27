@@ -4,12 +4,12 @@
       <span>
         搜索历史
       </span>
-      <div class="delete-all" @click="deleteAll">
+      <div class="delete-all" @click="deleteAll" v-if="$store.state.searchHistory.length">
         <img src="~assets/img/search/delete.svg" alt="">
       </div>
     </div>
     <div class="history-list">
-      <span v-for="(item, index) in SearchList" :key="index">
+      <span v-for="(item, index) in SearchList" :key="index" @click="searchHistory(item)">
         {{item}}
       </span>
     </div>
@@ -17,8 +17,17 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import { Dialog } from 'vant';
+
+Vue.use(Dialog);
 export default {
   name: 'SearchHistory',
+  data() {
+    return {
+      show: false
+    }
+  },
   computed: {
     SearchList() {
       return this.$store.state.searchHistory
@@ -26,7 +35,23 @@ export default {
   },
   methods: {
     deleteAll() {
-      this.$store.commit('deleteAll')  
+      Dialog.confirm({
+        title: '提示',
+        message: '弹是否删除所有搜索记录'
+      }).then(() => {
+        this.$store.commit('deleteAll')
+      })
+    },
+    // beforeClose(action, done) {
+    //   if (action === 'confirm') {
+    //     setTimeout(done, 1000);
+    //   } else {
+    //     done();
+    //   }
+    // },
+    
+    searchHistory(keywords) {
+      this.$store.state.searchKeywords = keywords
     }
   },
 }
@@ -39,6 +64,10 @@ export default {
     display flex
     justify-content space-between
     padding 0 20px
+    .delete-all
+      img
+        width 18px
+        height 18px
   .history-list
     height 60px
     background-color #fff
