@@ -11,9 +11,9 @@ const state = {
   isShowSearch: false,
   searchKeywords: '',
   searchHistory: ['毛不易', '周杰伦'],
-  currentId: null,
-  currentMusic: null,
   songDesc: {
+    id: null,
+    currentMusic: null,
     name: '',
     artist: '',
     pic: "https://p2.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
@@ -21,14 +21,14 @@ const state = {
   },
   songList: [
     {
-      id: '',
-      name: '',
-      artist: '',
+      id: '1',
+      name: '1',
+      artist: '1',
     },
   ],
   searchList: [],
   isShowAudio: false,
-  currentTime: 0
+  curTime: 0
 }
 export default new Vuex.Store({
   state,

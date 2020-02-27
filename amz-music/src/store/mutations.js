@@ -19,7 +19,6 @@ export default {
   },
   // 添加历史记录
   addHistory(state, payLoad) {
-    console.log(payLoad);
     state.searchHistory = new Set([payLoad.name, ...state.searchHistory])
   },
   // 删除历史记录
@@ -27,11 +26,9 @@ export default {
     state.searchHistory = []
   },
   getMusicUrl(state, payLoad) {
-    state.currentId = payLoad.id
-    console.log(state.currentId);
+    state.songList.id = payLoad.id
     this.commit('addHistory',
     { 
-      id: payLoad.id,
       name: payLoad.name
     })
   },
@@ -39,6 +36,6 @@ export default {
     state.isShowAudio = true
   },
   getCurrentTime(state, payLoad) {
-    state.currentTime = payLoad
+    state.curTime = payLoad
   }
 }

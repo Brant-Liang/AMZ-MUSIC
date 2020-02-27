@@ -33,7 +33,8 @@
           <img src="~assets/img/audio/list.svg" alt />
         </div>
       </div>
-      <audio :src="currentMusic"
+      <song-list/>
+      <audio :src="songDesc.currentMusic"
             loop
             ref="Audio"
       >
@@ -47,7 +48,10 @@
 import AudioHeader from './childComponents/audioHeader'
 import BScroll from 'components/common/betterScroll/BetterScroll'
 import ProgressBar from './childComponents/progress'
+import SongList from './childComponents/songList'
 import AudioMask from './childComponents/mask'
+
+import { mapState } from 'vuex'
 export default {
   name: 'Audio',
   data() {
@@ -64,6 +68,7 @@ export default {
     AudioHeader,
     BScroll,
     ProgressBar,
+    SongList,
     AudioMask
   },
   mounted() {
@@ -75,17 +80,13 @@ export default {
     }
   },
   computed: {
-    isShowAudio() {
-      return this.$store.state.isShowAudio
-    },
+    ...mapState([
+      'isShowAudio',
+      'songDesc',
+      'curTime',
+    ]),
     currentMusic() {
-      return this.$store.state.currentMusic
-    },
-    songDesc() {
-      return this.$store.state.songDesc
-    },
-    curTime() {
-      return this.$store.state.currentTime
+      return this.$store.state.songDesc.currentMusic
     },
     songLyric() {
       return this.$store.getters.splitLyric

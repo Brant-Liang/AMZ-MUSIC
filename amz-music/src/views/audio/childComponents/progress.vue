@@ -28,7 +28,7 @@ export default {
   },
   computed: {
     curTime() {
-      return this.$store.state.currentTime
+      return this.$store.state.curTime
     },
     proportion: {
       get() {

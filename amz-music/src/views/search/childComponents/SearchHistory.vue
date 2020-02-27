@@ -4,7 +4,7 @@
       <span>
         搜索历史
       </span>
-      <div class="delete-all" @click="deleteAll" v-if="$store.state.searchHistory.length">
+      <div class="delete-all" @click="deleteAll" >
         <img src="~assets/img/search/delete.svg" alt="">
       </div>
     </div>
