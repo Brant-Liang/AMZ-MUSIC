@@ -38,8 +38,7 @@ export default {
   getCurrentTime(state, payLoad) {
     state.curTime = payLoad
   },
-  addSongList(state, payLoad) {
-    state.songList.push(payLoad)
-    console.log(state.songList);
+  playThisSong(state, payLoad) {
+    state.songDesc.id = payLoad
   }
 }

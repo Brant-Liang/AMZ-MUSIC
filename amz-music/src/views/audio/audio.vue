@@ -36,7 +36,7 @@
       <van-popup
         v-model="showSongList"
         position="bottom"
-        :style="{ height: '40%' }"
+        :style="{ height: '45%' }"
       >
         <song-list/>
       </van-popup>

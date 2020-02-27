@@ -3,8 +3,8 @@
     <div class="header">
       <div class="title">播放列表</div>
     </div>
-    <div class="song-item" v-for="(item, index) in songList" :key="index">
-      <div class="name">{{item.name}} - </div>
+    <div class="song-item" v-for="(item, index) in songList" :key="index" @click="playThisSong(item)">
+      <div class="name">{{item.name}}  </div>
       <div class="artist">{{item.artist}}</div>
     </div>
   </div>
@@ -18,6 +18,12 @@ export default {
     ...mapState([
       'songList'
     ])
+  },
+  methods: {
+    playThisSong(song) {
+      this.$store.commit('playThisSong', song.id)
+      this.$store.dispatch('getMusic', song)
+    }
   },
 };
 </script>
