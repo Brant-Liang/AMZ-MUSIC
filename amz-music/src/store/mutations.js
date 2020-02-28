@@ -40,5 +40,8 @@ export default {
   },
   playThisSong(state, payLoad) {
     state.songDesc.id = payLoad
-  }
+  },
+  // nextSong(state, payLoad) {
+  //   state.songDesc.id = payLoad.
+  // }
 }

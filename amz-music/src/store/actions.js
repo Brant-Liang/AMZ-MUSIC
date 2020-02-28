@@ -14,12 +14,23 @@ export default {
       state.songDesc.lyric = res.lrc.lyric
     })
     Promise.all([p1, p2, p3]).then(() => {
-      state.songList= new Set([{
-        id: state.songDesc.id,
-        name: state.songDesc.name,
-        artist: state.songDesc.artist
-      }, ...state.songList])
-      console.log(state.songList);
+      console.log(state.songList.includes(state.songDesc));
+      if(!state.songList.includes(state.songDesc)){
+        state.songList = [{
+          id: state.songDesc.id,
+          name: state.songDesc.name,
+          artist: state.songDesc.artist
+        }, ...state.songList]
+      }
+      let temp = {}
+      state.songList = state.songList.reduce((prev, curv) => {
+        if (!temp[curv.id]) {
+          temp[curv.id] = true;
+          prev.push(curv);
+        }
+        return prev
+      },[])
+      console.log(state.songList)
     })
   }
 }

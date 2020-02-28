@@ -26,7 +26,7 @@
           <img v-if="playStatus" src="~assets/img/audio/play.svg" alt />
           <img v-else src="~assets/img/audio/pause.svg" alt />
         </div>
-        <div class="next">
+        <div class="next" @click="playNextSong">
           <img src="~assets/img/audio/next.svg" alt />
         </div>
         <div class="play-list" @click="songList">
@@ -87,6 +87,7 @@ export default {
   },
   watch: {
     currentMusic() {
+      this.audioEnd()
       this.audioHandle()
       this.pause()
     }
@@ -96,7 +97,7 @@ export default {
       'isShowAudio',
       'songDesc',
       'curTime',
-
+      'songList'
     ]),
     currentMusic() {
       return this.$store.state.songDesc.currentMusic
@@ -134,6 +135,9 @@ export default {
       this.playStatus = true
       clearInterval(this.lyricTimer)
     },
+    // playNextSong() {
+    //   this.$store.commit('nextSong', this.songList)
+    // },
     // 播放暂停按钮
     audioClick() {
       if(this.$refs.Audio.paused) {
@@ -156,7 +160,7 @@ export default {
       this.currentIndex = 0
       this.$refs.scroll.scrollTo(0, 0)
       clearInterval(this.lyricTimer)
-      window.cancelAnimationFrame(this.distAnimation)
+      this.$store.commit('getCurrentTime', 0)
     },
     lyricPlay() {
       let { Audio, scroll } = this.$refs
