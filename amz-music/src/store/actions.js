@@ -25,8 +25,8 @@ export default {
       let temp = {}
       state.songList = state.songList.reduce((prev, curv) => {
         if (!temp[curv.id]) {
-          temp[curv.id] = true;
-          prev.push(curv);
+          temp[curv.id] = true
+          prev.push(curv)
         }
         return prev
       },[])
