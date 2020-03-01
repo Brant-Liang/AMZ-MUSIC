@@ -14,23 +14,29 @@ export default {
       state.songDesc.lyric = res.lrc.lyric
     })
     Promise.all([p1, p2, p3]).then(() => {
-      console.log(state.songList.includes(state.songDesc));
-      if(!state.songList.includes(state.songDesc)){
+      if(!state.songListIds.includes(state.songDesc.id)){
         state.songList = [{
           id: state.songDesc.id,
           name: state.songDesc.name,
           artist: state.songDesc.artist
         }, ...state.songList]
       }
-      let temp = {}
-      state.songList = state.songList.reduce((prev, curv) => {
-        if (!temp[curv.id]) {
-          temp[curv.id] = true
-          prev.push(curv)
-        }
-        return prev
-      },[])
-    
+      for (let i = 0; i < state.songList.length; i++) {
+        if(!state.songListIds.includes(state.songList[i].id))
+          state.songListIds = [state.songList[i].id, ...state.songListIds]
+      }
+      // state.songListIds = state.songListIds.reduce((prev, curv) => {
+      //   return prev.includes(curv) ? prev : [...prev, curv]
+      // }, [])
+      console.log(state.songListIds);
+      // let temp = {}
+      // state.songList = state.songList.reduce((prev, curv) => {
+      //   if (!temp[curv.id]) {
+      //     temp[curv.id] = true
+      //     prev.push(curv)
+      //   }
+      //   return prev
+      // },[])
     })
   }
 }

@@ -21,6 +21,7 @@ const state = {
   },
   songList: [
   ],
+  songListIds: [],
   searchList: [],
   isShowAudio: false,
   curTime: 0

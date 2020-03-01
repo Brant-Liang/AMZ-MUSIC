@@ -97,7 +97,7 @@ export default {
       'isShowAudio',
       'songDesc',
       'curTime',
-      'songList'
+      'songListIds'
     ]),
     currentMusic() {
       return this.$store.state.songDesc.currentMusic
@@ -135,9 +135,9 @@ export default {
       this.playStatus = true
       clearInterval(this.lyricTimer)
     },
-    // playNextSong() {
-    //   this.$store.commit('nextSong', this.songList)
-    // },
+    playNextSong() {
+      this.$store.commit('nextSong', this.songListIds)
+    },
     // 播放暂停按钮
     audioClick() {
       if(this.$refs.Audio.paused) {
