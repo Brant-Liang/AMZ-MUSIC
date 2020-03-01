@@ -30,7 +30,7 @@ export default {
         }
         return prev
       },[])
-      console.log(state.songList)
+    
     })
   }
 }
