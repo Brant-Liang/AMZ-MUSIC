@@ -22,6 +22,10 @@ const state = {
   songList: [
   ],
   songListIds: [],
+  playWays: 0,
+    // 0顺序
+    //1单曲循环
+    //2单曲循环
   searchList: [],
   isShowAudio: false,
   curTime: 0

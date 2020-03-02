@@ -38,6 +38,12 @@ export default {
   getCurrentTime(state, payLoad) {
     state.curTime = payLoad
   },
+  playWay(state) {
+    if(state.playWays >= 0 && state.playWays < 2)
+      state.playWays++
+    else
+      state.playWays = 0
+  },
   lastSong(state, payLoad) {
     if(payLoad <= state.songListIds.length - 1 && payLoad > 0) {
       console.log(state.songList[0])
@@ -57,5 +63,10 @@ export default {
       payLoad = 0
       state.songDesc = state.songList[payLoad]
     }
+  },
+  randomPlay(state) {
+    let index = Math.round(Math.random()*state.songList.length)
+    console.log(index)
+    state.songDesc = state.songList[index]
   }
 }

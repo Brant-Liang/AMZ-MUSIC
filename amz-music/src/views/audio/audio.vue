@@ -16,8 +16,10 @@
       </b-scroll>
       <progress-bar v-if="isShowAudio" :Audio="$refs.Audio" :curTime="curTime" :duration="duration"/>
       <div class="controlBar">
-        <div class="play-way">
-          <img src="~assets/img/audio/liebiaoxunhuan.svg" alt />
+        <div class="play-way" @click="switchPlayWay">
+          <img v-if="playWays === 2" src="~assets/img/audio/liebiaoxunhuan.svg" alt />
+          <img v-if="playWays === 0" src="../../assets/img/audio/danquxunhuan.svg" alt="">
+          <img v-if="playWays === 1" src="../../assets/img/audio/suijibofang.svg" alt="">
         </div>
         <div class="last" @click="playLastSong">
           <img src="~assets/img/audio/next.svg" alt />
@@ -73,7 +75,7 @@ export default {
       x: 0.05,
       duration: 0,
       showSongList: false,
-      refresh: true
+      refresh: false
     }
   }, 
   components: {
@@ -97,7 +99,8 @@ export default {
     ...mapState([
       'isShowAudio',
       'songDesc',
-      'curTime'
+      'curTime',
+      'playWays'
     ]),
     currentMusic() {
       return this.$store.state.songDesc.currentMusic
@@ -121,6 +124,9 @@ export default {
         this.timer = requestAnimationFrame(this.distAnimation)
       }
     },
+    switchPlayWay() {
+      this.$store.commit('playWay')
+    },
     audioPlay() {
       let { Audio } = this.$refs
       if(Audio.src !== ''){
@@ -139,8 +145,16 @@ export default {
       this.$store.commit('lastSong', this.$store.getters.curSongIndex)
     },
     playNextSong() {
-      this.$store.commit('nextSong', this.$store.getters.curSongIndex)
+      if(this.playWays === 1){
+        this.$store.commit('randomPlay')
+      }
+      else {
+        this.$store.commit('nextSong', this.$store.getters.curSongIndex)
+      }
       this.audioPlay()
+    },
+    randomPlay() {
+      this.$store.commit('randomPlay')
     },
     // 播放暂停按钮
     audioClick() {
@@ -165,10 +179,16 @@ export default {
       this.$refs.scroll.scrollTo(0, 0)
       clearInterval(this.lyricTimer)
       // 单曲循环
-      // this.$store.commit('getCurrentTime', 0)
+      if(this.playWays === 0)
+        this.$store.commit('getCurrentTime', 0)
+        this.audioPlay()
       // 顺序播放
-      this.playNextSong()
+      if(this.playWays === 2)
+        this.playNextSong()
+        this.audioPlay()
       // 随机播放
+      if(this.playWays === 1)
+        this.randomPlay()
     },
     lyricPlay() {
       let { Audio, scroll } = this.$refs
