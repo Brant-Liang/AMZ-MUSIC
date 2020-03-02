@@ -14,5 +14,8 @@ export default {
       lineArr = [...lineArr, {minute, second, lyric}]
     });
     return lineArr
+  },
+  curSongIndex(state) {
+    return state.songListIds.indexOf(state.songDesc.id) 
   }
 }

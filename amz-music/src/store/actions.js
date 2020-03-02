@@ -17,8 +17,11 @@ export default {
       if(!state.songListIds.includes(state.songDesc.id)){
         state.songList = [{
           id: state.songDesc.id,
+          currentMusic: state.songDesc.currentMusic,
           name: state.songDesc.name,
-          artist: state.songDesc.artist
+          artist: state.songDesc.artist,
+          pic: state.songDesc.pic,
+          lyric: state.songDesc.lyric
         }, ...state.songList]
       }
       for (let i = 0; i < state.songList.length; i++) {
@@ -28,7 +31,7 @@ export default {
       // state.songListIds = state.songListIds.reduce((prev, curv) => {
       //   return prev.includes(curv) ? prev : [...prev, curv]
       // }, [])
-      console.log(state.songListIds);
+      console.log(state.songListIds)
       // let temp = {}
       // state.songList = state.songList.reduce((prev, curv) => {
       //   if (!temp[curv.id]) {

@@ -38,10 +38,24 @@ export default {
   getCurrentTime(state, payLoad) {
     state.curTime = payLoad
   },
-  playThisSong(state, payLoad) {
-    state.songDesc.id = payLoad
+  lastSong(state, payLoad) {
+    if(payLoad <= state.songListIds.length - 1 && payLoad > 0) {
+      console.log(state.songList[0])
+      state.songDesc = state.songList[payLoad - 1]
+    }
+    else if(payLoad === 0){
+      payLoad = state.songListIds.length - 1
+      state.songDesc = state.songList[payLoad]
+    }
   },
-  nextSong() {
-    //state.songDesc.id = payLoad.
+  nextSong(state, payLoad) {
+    if(payLoad < state.songListIds.length - 1) {
+      console.log(state.songList[0])
+      state.songDesc = state.songList[payLoad + 1]
+    }
+    else{
+      payLoad = 0
+      state.songDesc = state.songList[payLoad]
+    }
   }
 }

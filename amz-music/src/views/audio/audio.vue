@@ -19,7 +19,7 @@
         <div class="play-way">
           <img src="~assets/img/audio/liebiaoxunhuan.svg" alt />
         </div>
-        <div class="last">
+        <div class="last" @click="playLastSong">
           <img src="~assets/img/audio/next.svg" alt />
         </div>
         <div class="play" @click="audioClick" ref="audioBtn">
@@ -41,7 +41,7 @@
         <song-list/>
       </van-popup>
       <audio :src="songDesc.currentMusic"
-            loop
+            
             ref="Audio"
       >
       </audio>
@@ -72,7 +72,8 @@ export default {
       startR: 5,
       x: 0.05,
       duration: 0,
-      showSongList: false
+      showSongList: false,
+      refresh: true
     }
   }, 
   components: {
@@ -87,17 +88,16 @@ export default {
   },
   watch: {
     currentMusic() {
-      this.audioEnd()
+      this.refresh = false
       this.audioHandle()
-      this.pause()
+      this.refresh = true
     }
   },
   computed: {
     ...mapState([
       'isShowAudio',
       'songDesc',
-      'curTime',
-      'songListIds'
+      'curTime'
     ]),
     currentMusic() {
       return this.$store.state.songDesc.currentMusic
@@ -115,7 +115,7 @@ export default {
     },
     distAnimation() {
       const { dist, Audio } = this.$refs
-      if(!this.playStatus && Audio.src){
+      if(!this.playStatus && Audio.src && this.refresh){
         dist.style.transform = "rotate(" + this.startR + "deg)"
         this.startR += 0.22
         this.timer = requestAnimationFrame(this.distAnimation)
@@ -135,8 +135,12 @@ export default {
       this.playStatus = true
       clearInterval(this.lyricTimer)
     },
+    playLastSong() {
+      this.$store.commit('lastSong', this.$store.getters.curSongIndex)
+    },
     playNextSong() {
-      this.$store.commit('nextSong', this.songListIds)
+      this.$store.commit('nextSong', this.$store.getters.curSongIndex)
+      this.audioPlay()
     },
     // 播放暂停按钮
     audioClick() {
@@ -160,7 +164,11 @@ export default {
       this.currentIndex = 0
       this.$refs.scroll.scrollTo(0, 0)
       clearInterval(this.lyricTimer)
-      this.$store.commit('getCurrentTime', 0)
+      // 单曲循环
+      // this.$store.commit('getCurrentTime', 0)
+      // 顺序播放
+      this.playNextSong()
+      // 随机播放
     },
     lyricPlay() {
       let { Audio, scroll } = this.$refs

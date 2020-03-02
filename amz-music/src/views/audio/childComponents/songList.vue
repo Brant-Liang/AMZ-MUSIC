@@ -22,7 +22,6 @@ export default {
   },
   methods: {
     playThisSong(song) {
-      this.$store.commit('playThisSong', song.id)
       this.$store.dispatch('getMusic', song)
     }
   },
