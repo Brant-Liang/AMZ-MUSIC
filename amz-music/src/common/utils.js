@@ -10,3 +10,6 @@ export function debounce (func, delay) {
     }, delay)
   }
 }
+// let fn = debounce(function test() {
+//   console.log(122);
+// }, 5000)

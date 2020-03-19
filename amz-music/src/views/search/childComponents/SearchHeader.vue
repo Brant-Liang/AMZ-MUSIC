@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { debounce } from 'common/utils'
 import { getSuggest } from 'network/search'
 export default {
   name: 'SearchHeader',
@@ -19,7 +20,7 @@ export default {
     return {
       limit: 30,
       offset: 0,
-      type: 1,
+      type: 1
     }
   },
   computed: {
@@ -41,7 +42,7 @@ export default {
     }
   },
   watch: {
-    keywords(newVal) {
+    keywords: debounce(function(newVal) {
       console.log(this.keywords);
       if(newVal !== '') {
         getSuggest(this.keywords, this.limit, this.offset, this.type).then(res => {
@@ -49,7 +50,7 @@ export default {
         this.searchList = res.result.songs
       })
       }
-    }
+    }, 1000)
   },
   methods: {
     backToHome() {
