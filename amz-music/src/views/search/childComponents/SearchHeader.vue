@@ -50,7 +50,7 @@ export default {
         this.searchList = res.result.songs
       })
       }
-    }, 1000)
+    }, 500)
   },
   methods: {
     backToHome() {
