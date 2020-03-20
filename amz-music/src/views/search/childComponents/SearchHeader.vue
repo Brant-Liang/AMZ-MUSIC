@@ -43,10 +43,8 @@ export default {
   },
   watch: {
     keywords: debounce(function(newVal) {
-      console.log(this.keywords);
       if(newVal !== '') {
         getSuggest(this.keywords, this.limit, this.offset, this.type).then(res => {
-        console.log(res.result);
         this.searchList = res.result.songs
       })
       }
