@@ -68,5 +68,8 @@ export default {
     let index = Math.round(Math.random()*state.songList.length)
     console.log(index)
     state.songDesc = state.songList[index]
+  },
+  deleteAllSong(state) {
+    state.songList = []
   }
 }

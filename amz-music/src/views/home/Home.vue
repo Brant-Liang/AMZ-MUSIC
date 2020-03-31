@@ -5,11 +5,11 @@
       <nav-bar-item path='/home/video'>视频</nav-bar-item>
       <nav-bar-item path='/home/dj'>电台</nav-bar-item>
     </nav-bar>
-    <keep-alive>
       <better-scroll class="content">
+        <keep-alive>
         <router-view></router-view>
+    </keep-alive> 
       </better-scroll>
-    </keep-alive>
   </div>
 </template>
 

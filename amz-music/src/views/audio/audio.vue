@@ -36,9 +36,10 @@
         </div>
       </div>
       <van-popup
+        round
         v-model="showSongList"
         position="bottom"
-        :style="{ height: '45%' }"
+        :style="{ height: '50%'}"
       >
         <song-list/>
       </van-popup>
@@ -59,6 +60,7 @@ import ProgressBar from './childComponents/progress'
 import SongList from './childComponents/songList'
 import AudioMask from './childComponents/mask'
 import Vue from 'vue';
+import { requestAnimationFrame, cancelAnimationFrame } from 'raf-plus'
 import { Popup } from 'vant';
 
 Vue.use(Popup);
@@ -74,8 +76,7 @@ export default {
       startR: 5,
       x: 0.05,
       duration: 0,
-      showSongList: false,
-      refresh: false
+      showSongList: false
     }
   }, 
   components: {
@@ -90,9 +91,7 @@ export default {
   },
   watch: {
     currentMusic() {
-      this.refresh = false
       this.audioHandle()
-      this.refresh = true
     }
   },
   computed: {
@@ -118,10 +117,10 @@ export default {
     },
     distAnimation() {
       const { dist, Audio } = this.$refs
-      if(!this.playStatus && Audio.src && this.refresh){
+      if(!this.playStatus && Audio.src){
         dist.style.transform = "rotate(" + this.startR + "deg)"
         this.startR += 0.22
-        this.timer = requestAnimationFrame(this.distAnimation)
+        this.timer =  requestAnimationFrame(this.distAnimation)
       }
     },
     switchPlayWay() {
@@ -133,8 +132,9 @@ export default {
         Audio.play()
         this.duration = Audio.duration
         this.lyricPlay()
+        this.playStatus = false
+        this.distAnimation()
       }
-      this.playStatus = false
     },
     pause() {
       this.$refs.Audio.pause()
@@ -142,25 +142,26 @@ export default {
       clearInterval(this.lyricTimer)
     },
     playLastSong() {
+      cancelAnimationFrame(this.timer)
       this.$store.commit('lastSong', this.$store.getters.curSongIndex)
     },
     playNextSong() {
+      cancelAnimationFrame(this.timer)
       if(this.playWays === 1){
         this.$store.commit('randomPlay')
       }
       else {
         this.$store.commit('nextSong', this.$store.getters.curSongIndex)
       }
-      this.audioPlay()
     },
     randomPlay() {
+      cancelAnimationFrame(this.timer)
       this.$store.commit('randomPlay')
     },
     // 播放暂停按钮
     audioClick() {
       if(this.$refs.Audio.paused) {
         this.audioPlay()
-        this.distAnimation()
         return
       }
       this.pause()
@@ -168,7 +169,6 @@ export default {
     audioHandle() {
       let play = () => {
         this.audioPlay()
-        this.distAnimation()
         document.removeEventListener("touchstart", play)
       }
       play()
@@ -307,4 +307,5 @@ export default {
       img 
         width 20px
         height 20px
+
 </style>

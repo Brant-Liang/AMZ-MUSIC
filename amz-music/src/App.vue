@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
     <tab-bar>
       <tab-bar-item path="/home" color="#8a8a8a" activeColor="#1D82FE">
         <img slot="icon-active" src="~assets/img/tabbar/home-active.svg" alt="">
