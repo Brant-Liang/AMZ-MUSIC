@@ -8,10 +8,13 @@
         </div>
       </div>
       <b-scroll class="content" ref="scroll" v-show="!isShowPic">
-        <div class="lyric" @click="showPic">
-          <p class="line" ref="lineLyric" :class="{active: currentIndex === index}" v-for="(item, index) in songLyric" :key="index">
-            {{item.lyric}}
-          </p>
+       <div class="lyric" @click="showPic">
+         <div ref="lineLyric" class="lyric-line" v-for="(item, index) in songLyric" :key="index">
+            <p class="line" :class="{active: currentIndex === index}">
+              <span class="all-lyric">{{item.lyric}}</span> 
+              <span ref="activeLyric" class="active-lyric" v-show="currentIndex === index">{{item.lyric}}</span>
+            </p>
+         </div>
         </div>
       </b-scroll>
       <progress-bar v-if="isShowAudio" :Audio="$refs.Audio" :curTime="curTime" :duration="duration"/>
@@ -76,7 +79,10 @@ export default {
       startR: 5,
       x: 0.05,
       duration: 0,
-      showSongList: false
+      showSongList: false,
+      lyricWidth: 0,
+      lyricMoveTimer: null,
+      lyricRate: null
     }
   }, 
   components: {
@@ -132,6 +138,7 @@ export default {
         Audio.play()
         this.duration = Audio.duration
         this.lyricPlay()
+        this.lyricMovePlay(this.lyricRate * 1000)
         this.playStatus = false
         this.distAnimation()
       }
@@ -140,6 +147,7 @@ export default {
       this.$refs.Audio.pause()
       this.playStatus = true
       clearInterval(this.lyricTimer)
+      clearInterval(this.lyricMoveTimer)
     },
     playLastSong() {
       cancelAnimationFrame(this.timer)
@@ -178,6 +186,7 @@ export default {
       this.currentIndex = 0
       this.$refs.scroll.scrollTo(0, 0)
       clearInterval(this.lyricTimer)
+      clearInterval(this.lyricMoveTimer)
       // 单曲循环
       if(this.playWays === 0)
         this.$store.commit('getCurrentTime', 0)
@@ -191,7 +200,7 @@ export default {
         this.randomPlay()
     },
     lyricPlay() {
-      let { Audio, scroll } = this.$refs
+      let { Audio, scroll} = this.$refs
       if(!Audio || !scroll) return;
       this.lyricTimer = setInterval(() => {
         this.$store.commit('getCurrentTime', Audio.currentTime)
@@ -200,13 +209,16 @@ export default {
           return
         }
         // 歌词滚动及相对应时间
-        //console.log(this.songLyric);
-        if(!this.songLyric || !this.$refs.scroll) return;
+        if(!this.songLyric || !scroll) return;
         let n;
         this.songLyric.find((item, index) => {
           let {minute, second} = item
           if(minute*60 + second === Math.round(Audio.currentTime)) {
             n = index
+            this.lyricRate = this.songLyric[index + 1].minute*60 + this.songLyric[index + 1].second - (minute*60 + second);
+            this.lyricWidth = 0;
+            clearInterval(this.lyricMoveTimer)
+            this.lyricMovePlay(this.lyricRate * 1000)
             return true
           }
           return false
@@ -221,9 +233,18 @@ export default {
         }
       }, 1000)
     },
+    lyricMovePlay(sec) {
+        this.lyricMoveTimer = setInterval(() => {
+          this.lyricWidth += (100/(sec/20).toFixed(2)) //100 / (second / 20)
+          this.$refs.activeLyric[this.currentIndex].style.width = this.lyricWidth + '%';
+          if(this.lyricWidth >= 100) {
+            this.$refs.activeLyric[this.currentIndex].style.width = 0;
+          }
+        }, 20);
+    },
     songList() {
       this.showSongList = true
-    }
+    },
   },
 }
 </script>
@@ -260,14 +281,23 @@ export default {
       text-align center
       .lyric
         color #bbb
-        width 80%
         margin 0 auto
-        .line
-          padding 8px 0px
-        .active
-          color #fff
-          font-size 19px
-          transition all .4s ease
+        .lyric-line
+          .line
+            padding 8px 0px
+            display inline-block
+          .active
+            display inline-block
+            font-size 19px
+            transition all .4s ease
+            position relative
+            .active-lyric
+              color red
+              position absolute
+              left 0
+              width 0
+              overflow hidden
+              white-space nowrap
   .controlBar
     display flex
     justify-content space-around
