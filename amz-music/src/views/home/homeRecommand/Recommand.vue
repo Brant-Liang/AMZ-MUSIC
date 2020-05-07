@@ -12,7 +12,7 @@
       </func-item>
       <func-item>
         <img slot="func-img" src="~assets/img/home/ranking.svg" alt="">
-        <span slot="func-title">排行榜</span>
+        <span slot="func-title" @click="toRank">排行榜</span>
       </func-item>
       <func-item>
         <img slot="func-img" src="~assets/img/home/song-list.svg" alt="">
@@ -67,6 +67,11 @@ export default {
     getNewSong().then(res => {
       this.newSong = res.result
     })
+  },
+  methods: {
+    toRank() {
+     
+    }
   },
 }
 </script>

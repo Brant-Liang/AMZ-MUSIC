@@ -17,6 +17,7 @@
       </tab-bar-item>
     </tab-bar>
     <search/>
+    <v-rank/>
     <slider-menu/>
     <v-audio/>
   </div>
@@ -27,6 +28,7 @@ import TabBarItem from 'components/common/tabbar/TabBarItem'
 import MusicBar from 'components/content/musicBar/MusicBar'
 import vAudio from 'views/audio/audio'
 import search from 'views/search/Search'
+import vRank from 'views/home/homeRecommand/childComponents/Rank'
 import SliderMenu from 'components/content/silder-menu/Menu'
 export default {
   components: {
@@ -35,7 +37,8 @@ export default {
     MusicBar,
     SliderMenu,
     search,
-    vAudio
+    vAudio,
+    vRank
   }
 }
 </script>

@@ -8,7 +8,7 @@
       <better-scroll class="content">
         <keep-alive>
         <router-view></router-view>
-    </keep-alive> 
+        </keep-alive> 
       </better-scroll>
   </div>
 </template>
