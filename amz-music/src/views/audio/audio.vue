@@ -12,7 +12,6 @@
          <div ref="lineLyric" class="lyric-line" v-for="(item, index) in songLyric" :key="index">
             <p class="line" :class="{active: currentIndex === index}">
               <span class="all-lyric">{{item.lyric}}</span> 
-              <span ref="activeLyric" class="active-lyric" v-show="currentIndex === index">{{item.lyric}}</span>
             </p>
          </div>
         </div>
@@ -138,7 +137,6 @@ export default {
         Audio.play()
         this.duration = Audio.duration
         this.lyricPlay()
-        this.lyricMovePlay(this.lyricRate * 1000)
         this.playStatus = false
         this.distAnimation()
       }
@@ -215,10 +213,7 @@ export default {
           let {minute, second} = item
           if(minute*60 + second === Math.round(Audio.currentTime)) {
             n = index
-            this.lyricRate = this.songLyric[index + 1].minute*60 + this.songLyric[index + 1].second - (minute*60 + second);
-            this.lyricWidth = 0;
             clearInterval(this.lyricMoveTimer)
-            this.lyricMovePlay(this.lyricRate * 1000)
             return true
           }
           return false
@@ -232,15 +227,6 @@ export default {
           }
         }
       }, 1000)
-    },
-    lyricMovePlay(sec) {
-        this.lyricMoveTimer = setInterval(() => {
-          this.lyricWidth += (100/(sec/20).toFixed(2)) //100 / (second / 20)
-          this.$refs.activeLyric[this.currentIndex].style.width = this.lyricWidth + '%';
-          if(this.lyricWidth >= 100) {
-            this.$refs.activeLyric[this.currentIndex].style.width = 0;
-          }
-        }, 20);
     },
     songList() {
       this.showSongList = true
@@ -291,13 +277,7 @@ export default {
             font-size 19px
             transition all .4s ease
             position relative
-            .active-lyric
-              color red
-              position absolute
-              left 0
-              width 0
-              overflow hidden
-              white-space nowrap
+            color #fff
   .controlBar
     display flex
     justify-content space-around

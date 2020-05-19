@@ -8,6 +8,13 @@ export default {
   searchShow(state) {
     state.isShowSearch = true
   },
+  // 排行榜
+  hideTabbar(state) {
+    state.isShowTabbar = false
+  },
+  rankToHome(state) {
+    state.isShowTabbar = true
+  },
   // 返回主页
   backToHome(state) {
     state.isShowSearch = false

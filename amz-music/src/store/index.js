@@ -9,6 +9,7 @@ Vue.use(Vuex)
 const state = {
   isShowMenu: false,
   isShowSearch: false,
+  isShowTabbar: true,
   searchKeywords: '',
   searchHistory: ['毛不易', '周杰伦'],
   songDesc: {

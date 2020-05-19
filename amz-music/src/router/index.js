@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 const Home = () => import('views/home/Home.vue')
 const Profile = () => import('views/profile/profile.vue')
 const Recommand = () => import('views/home/homeRecommand/Recommand.vue')
+const Rank = () => import('../views/home/homeRecommand/childComponents/Rank.vue')
 const Video = () => import('views/home/homeVideo/Video.vue')
 const Dj = () => import('views/home/homeDj/Dj.vue')
 Vue.use(VueRouter)
@@ -41,6 +42,11 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: Profile
+  },
+  {
+    path: '/rank',
+    name: 'Rank',
+    component: Rank,
   }
 ]
 

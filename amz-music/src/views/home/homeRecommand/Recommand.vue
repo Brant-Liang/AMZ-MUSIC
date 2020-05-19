@@ -70,7 +70,8 @@ export default {
   },
   methods: {
     toRank() {
-     
+      this.$store.commit('hideTabbar')
+      this.$router.push('/rank')
     }
   },
 }

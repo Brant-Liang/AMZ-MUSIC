@@ -3,7 +3,7 @@
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
-    <tab-bar>
+    <tab-bar v-show="$store.state.isShowTabbar">
       <tab-bar-item path="/home" color="#8a8a8a" activeColor="#1D82FE">
         <img slot="icon-active" src="~assets/img/tabbar/home-active.svg" alt="">
         <img slot="icon" src="~assets/img/tabbar/home.svg" alt="">
@@ -17,7 +17,6 @@
       </tab-bar-item>
     </tab-bar>
     <search/>
-    <v-rank/>
     <slider-menu/>
     <v-audio/>
   </div>
@@ -28,7 +27,6 @@ import TabBarItem from 'components/common/tabbar/TabBarItem'
 import MusicBar from 'components/content/musicBar/MusicBar'
 import vAudio from 'views/audio/audio'
 import search from 'views/search/Search'
-import vRank from 'views/home/homeRecommand/childComponents/Rank'
 import SliderMenu from 'components/content/silder-menu/Menu'
 export default {
   components: {
@@ -38,7 +36,6 @@ export default {
     SliderMenu,
     search,
     vAudio,
-    vRank
   }
 }
 </script>
