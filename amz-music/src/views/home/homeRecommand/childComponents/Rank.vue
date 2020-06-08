@@ -39,7 +39,7 @@
         <p>电竞音乐榜</p>
         <p>云音乐欧美热歌榜</p>
         <p>云音乐欧美新歌榜</p>
-        <p>说唱TOP榜</p>
+        <p>说唱TOP榜 </p>
       </div>
     </better-scroll>
   </div>
